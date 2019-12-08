@@ -19,7 +19,7 @@ jobs:
         pipenv install --dev
     - name: Lint with prospector
       run: |
-        pipenv run prospector -s verygigh .
+        pipenv run prospector -s veryhigh .
     - name: Test with pytest
       run: |
         pipenv run python -m pytest
