@@ -4,12 +4,15 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+requests = "*"
+faker = "*"
 
 [packages]
 fastapi = "*"
 uvicorn = "*"
 aiogram = "*"
 aiohttp-socks = "*"
+pytest = "*"
 
 [requires]
 python_version = "3.8"
