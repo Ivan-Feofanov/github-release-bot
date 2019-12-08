@@ -8,6 +8,6 @@ WORKDIR /app
 COPY . /app
 RUN gcc -v
 RUN pip install pipenv
-RUN pipenv install -d
+RUN pipenv install
 
 ENTRYPOINT ["pipenv", "run", "uvicorn", "main:app"]
