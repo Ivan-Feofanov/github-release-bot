@@ -6,13 +6,13 @@ verify_ssl = true
 [dev-packages]
 requests = "*"
 faker = "*"
+pytest = "*"
 
 [packages]
 fastapi = "*"
 uvicorn = "*"
 aiogram = "*"
 aiohttp-socks = "*"
-pytest = "*"
 
 [requires]
 python_version = "3.8"
