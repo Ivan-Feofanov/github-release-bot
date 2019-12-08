@@ -66,9 +66,9 @@ def message_body():
         },
         "repository": {
             "id": fake.pyint(max_value=9999999),
-            "node_id": "MDEwOlJlcG9zaXRvcnkyMjY0ODcwNjc=",
-            "name": "test-release",
-            "full_name": "Ivan-Feofanov/test-release",
+            "node_id": fake.sha1(),
+            "name": fake.sentence(),
+            "full_name": fake.sentence(),
             "private": fake.pybool(),
             "owner": make_person(),
             "html_url": fake.uri(),
