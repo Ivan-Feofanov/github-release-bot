@@ -3,7 +3,7 @@ name: github-release-bot
 on: [push]
 
 jobs:
-  lint-and-test:
+  check:
 
     runs-on: ubuntu-latest
 
