@@ -19,7 +19,7 @@ if PROXY_URL and PROXY_USERNAME and PROXY_PASSWORD:
     PROXY_AUTH = aiohttp.BasicAuth(
         login=PROXY_USERNAME, password=PROXY_PASSWORD)
 
-bot = Bot(token=TOKEN, proxy=PROXY_URL, proxy_auth=PROXY_AUTH)
+bot = Bot(token=TOKEN, proxy=PROXY_URL, proxy_auth=PROXY_AUTH)  # noqa: pylint=invalid-name
 
 
 def prepare_markdown(text: str) -> str:

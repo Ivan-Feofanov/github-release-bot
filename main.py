@@ -7,9 +7,9 @@ from starlette.responses import Response
 from bot import proceed_release
 from models import Body
 
-ONLY_PUBLISH = os.getenv('ONLY_PUBLISH', False)
+ONLY_PUBLISH = bool(os.getenv('ONLY_PUBLISH'))
 
-app = FastAPI()
+app = FastAPI()  # noqa: pylint=invalid-name
 
 
 @app.post("/")

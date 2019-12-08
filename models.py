@@ -26,4 +26,3 @@ class Release(BaseModel):
 class Body(BaseModel):
     release: Release
     repository: Repository
-
