@@ -29,4 +29,4 @@ def test_main_unauthorized(mock, client, message_body):
 def test_prepare_markdown():
     incoming_body = '### title\n\r* abc\r\n'
     result = prepare_markdown(incoming_body)
-    assert result == '*title*\n\r- abc*\r\n'
+    assert result == 'title\n\r- abc\r\n'
