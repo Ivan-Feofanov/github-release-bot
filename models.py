@@ -1,6 +1,17 @@
 from datetime import datetime
+from enum import Enum
 
 from pydantic import BaseModel, HttpUrl
+
+
+class Actions(str, Enum):
+    published = 'published'
+    unpublished = 'unpublished'
+    created = 'created'
+    edited = 'edited'
+    deleted = 'deleted'
+    released = 'released'
+    prereleased = 'prereleased'
 
 
 class Repository(BaseModel):
@@ -24,5 +35,6 @@ class Release(BaseModel):
 
 
 class Body(BaseModel):
+    action: str
     release: Release
     repository: Repository

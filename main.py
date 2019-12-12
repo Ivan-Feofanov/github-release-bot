@@ -5,7 +5,7 @@ from starlette.requests import Request
 from starlette.responses import Response
 
 from bot import proceed_release
-from models import Body
+from models import Body, Actions
 from utils import check_auth
 
 app = FastAPI()  # noqa: pylint=invalid-name
@@ -22,7 +22,8 @@ async def release(*,
 
     check_auth(await request.body(), x_hub_signature)
 
-    if not (body.release.draft and release_only):
+    if (body.release.draft and not release_only) \
+            or body.action == Actions.released:
         background_tasks.add_task(proceed_release, body, chat_id)
 
     return Response(status_code=status.HTTP_200_OK)

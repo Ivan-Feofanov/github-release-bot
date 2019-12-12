@@ -28,8 +28,8 @@ def prepare_markdown(text: str) -> str:
 
 def make_message(body: Body) -> str:
     release = body.release
-    verb = 'Drafted' if release.draft else 'Published'
+    verb = body.action.capitalize()
     return f'Project: *{body.repository.name}*\n\r' \
-           f'{verb} new release *{release.name} ({release.tag_name})*.' \
+           f'{verb} release *{release.name} ({release.tag_name})*.' \
            f'\n\r\n\r' \
            f'*Release notes:* \n\r\n\r{prepare_markdown(release.body)}\n\r'
