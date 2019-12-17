@@ -1,10 +1,10 @@
 # github-release-bot
 ![](https://github.com/Ivan-Feofanov/github-release-bot/workflows/lint-and-test/badge.svg)
 ### Getting started
-#### Create telegram bot:
+##### Create telegram bot:
 Just follow [instruction](https://core.telegram.org/bots#3-how-do-i-create-a-bot)
 
-#### Fill environment variables:
+##### Fill environment variables:
 .env file example:
 ```shell script
 ENVIRONMENT=production
@@ -21,13 +21,23 @@ You can generate strong token with terminal command:
 ```shell script
 openssl rand -hex 32
 ```
-#### Start your bot:
+##### Start your bot:
 ```shell script
 docker run --env-file .env -p 80:80 --name release-bot feofanov/github-release-bot
 ```
 ---
 ### Release webhook example:
+Create your bot url:  
+`bot_url = https://where_you_bot.live/release/ + ?chat_id=you_chat_id&release_only=true`   
+Set query param **release_only** in true if you don't want getting 
+unpublished, created, edited, deleted, or prereleased events.
 
+##### Chat id
+First you should invite your bot in chat and then you can find your
+ chat id in your bot api:  
+`https://api.telegram.org/bot<you_bot_token>>/getUpdates` 
+
+##### Github settings
 * Open you github project settings and find **Webhook** section
 * Add new webhook with params:
   * Payload URL = your bot url
@@ -38,6 +48,21 @@ docker run --env-file .env -p 80:80 --name release-bot feofanov/github-release-b
 * Press **Add webhook**
 
 Congratulations, you're perfect!
+
+##### Release description example:
+Since telegram can understand only 
+[part of markdown tags](https://core.telegram.org/bots/api#markdown-style), 
+bot tries to convert standard markdown into tg-markdowned message.  
+Right now bot can correctly format next tags:
+* header (`###`) (only three octothorps)
+* list (`*`)
+* link(`[link name](http://link.address)`)
+Correct description example:
+```markdown
+### Release part subtitle
+* [first point title](https://link-tod-escriot.ion/)
+* [second point title](https://link-tod-escriot.ion/)
+``` 
 
 ---
 ### Deploy hook usage example:
