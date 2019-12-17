@@ -6,11 +6,11 @@ import settings
 from router import api_router
 from utils import check_auth
 
-docs_kwargs = {}
+docs_kwargs = {}  # noqa: pylint=invalid-name
 if settings.ENVIRONMENT == 'production':
     docs_kwargs = dict(docs_url=None, redoc_url=None)  # noqa: pylint=invalid-name
 
-app = FastAPI(**docs_kwargs)
+app = FastAPI(**docs_kwargs)  # noqa: pylint=invalid-name
 
 
 async def check_auth_middleware(request: Request):

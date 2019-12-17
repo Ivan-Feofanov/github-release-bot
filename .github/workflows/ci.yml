@@ -1,4 +1,4 @@
-name: github-release-bot
+name: lint-and-test
 
 on: [push]
 
