@@ -1,7 +1,7 @@
 # github-release-bot
 ![](https://github.com/Ivan-Feofanov/github-release-bot/workflows/lint-and-test/badge.svg)
-
-#### Creating telegram bot:
+### Getting started
+#### Create telegram bot:
 Just follow [instruction](https://core.telegram.org/bots#3-how-do-i-create-a-bot)
 
 #### Fill environment variables:
@@ -30,7 +30,7 @@ docker run --env-file .env -p 80:80 --name release-bot feofanov/github-release-b
 
 * Open you github project settings and find **Webhook** section
 * Add new webhook with params:
-  * Payload URL = you bot url
+  * Payload URL = your bot url
   * Content type = application/json
   * Secret = you_secret_token
 * Choose *Let me select individual events*
@@ -42,6 +42,7 @@ Congratulations, you're perfect!
 ---
 ### Deploy hook usage example:
 ```shell script
+#!/bin/bash
 PROJECT_NAME="my_project_name"
 GIT_TAG=$(git describe --tags --abbrev=0)
 HOST="http://example.com"
