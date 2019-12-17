@@ -1,29 +1,23 @@
-from fastapi import FastAPI, Header
+from fastapi import FastAPI, HTTPException, Depends
 from starlette import status
-from starlette.background import BackgroundTasks
 from starlette.requests import Request
-from starlette.responses import Response
 
-from bot import proceed_release
-from models import Body, Actions
+import settings
+from router import api_router
 from utils import check_auth
 
-app = FastAPI()  # noqa: pylint=invalid-name
+docs_kwargs = {}
+if settings.ENVIRONMENT == 'production':
+    docs_kwargs = dict(docs_url=None, redoc_url=None)  # noqa: pylint=invalid-name
+
+app = FastAPI(**docs_kwargs)
 
 
-@app.post("/release/")
-async def release(*,
-                  body: Body,
-                  chat_id: str = None,
-                  release_only: bool = False,
-                  request: Request,
-                  x_hub_signature: str = Header(''),
-                  background_tasks: BackgroundTasks):
+async def check_auth_middleware(request: Request):
+    if settings.ENVIRONMENT in ('production', 'test'):
+        body = await request.body()
+        if not check_auth(body, request.headers.get('X-Hub-Signature', '')):
+            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
 
-    check_auth(await request.body(), x_hub_signature)
 
-    if (body.release.draft and not release_only) \
-            or body.action == Actions.released:
-        background_tasks.add_task(proceed_release, body, chat_id)
-
-    return Response(status_code=status.HTTP_200_OK)
+app.include_router(api_router, dependencies=[Depends(check_auth_middleware)])

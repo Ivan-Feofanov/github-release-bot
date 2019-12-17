@@ -2,9 +2,6 @@ import hashlib
 import hmac
 from typing import ByteString
 
-from fastapi import HTTPException
-from starlette import status
-
 import settings
 from models import Body
 
@@ -16,8 +13,7 @@ def create_signature(key: ByteString, message: ByteString) -> str:
 def check_auth(body: ByteString, outer_sign: str):
     inner_sign = create_signature(settings.SECRET_TOKEN.encode(), body)
 
-    if not hmac.compare_digest(outer_sign, inner_sign):
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED)
+    return hmac.compare_digest(outer_sign, inner_sign)
 
 
 def prepare_markdown(text: str) -> str:

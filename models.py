@@ -38,3 +38,8 @@ class Body(BaseModel):
     action: str
     release: Release
     repository: Repository
+
+
+class Deploy(BaseModel):
+    project_name: str
+    tag: str

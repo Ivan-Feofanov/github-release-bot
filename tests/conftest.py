@@ -36,7 +36,7 @@ def make_person():
 
 
 @pytest.fixture
-def message_body():
+def release_body():
     return {
         "action": "edited",
         "changes": {
@@ -140,4 +140,12 @@ def message_body():
             "default_branch": "master"
         },
         "sender": make_person()
+    }
+
+
+@pytest.fixture
+def deploy_body():
+    return {
+        'project_name': fake.sentence(),
+        'tag': fake.word()
     }
