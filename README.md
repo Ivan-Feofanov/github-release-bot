@@ -1,5 +1,5 @@
 # github-release-bot
-![](https://github.com/Ivan-Feofanov/github-release-bot/workflows/check/badge.svg)
+![](https://github.com/Ivan-Feofanov/github-release-bot/workflows/lint-and-test/badge.svg)
 
 #### Creating telegram bot:
 Just follow [instruction](https://core.telegram.org/bots#3-how-do-i-create-a-bot)
