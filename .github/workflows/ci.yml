@@ -21,5 +21,7 @@ jobs:
       run: |
         pipenv run prospector -s veryhigh .
     - name: Test with pytest
+      env:
+        ENVIRONMENT: test
       run: |
         pipenv run python -m pytest
