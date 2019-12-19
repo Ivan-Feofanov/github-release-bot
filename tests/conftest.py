@@ -143,9 +143,10 @@ def release_body():
     }
 
 
-@pytest.fixture
-def deploy_body():
+@pytest.fixture(params=(None, 'markdown', 'html', 'misprint'))
+def custom_body(request):
     return {
-        'project_name': fake.sentence(),
-        'tag': fake.word()
+        'text': fake.sentence(),
+        'chat_id': fake.sha1(),
+        'parse_mode': request.param
     }

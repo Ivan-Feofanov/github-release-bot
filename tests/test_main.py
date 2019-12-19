@@ -7,7 +7,7 @@ from starlette.responses import Response
 from utils import prepare_markdown
 
 
-@pytest.mark.parametrize('url', ('/release/', '/deploy/'))
+@pytest.mark.parametrize('url', ('/release/', '/message/'))
 @patch('bot.bot.send_message')
 def test_main_unauthorized(mock, client, release_body, url):
     response: Response = client.post(url, json=release_body)

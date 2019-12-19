@@ -3,8 +3,8 @@ from starlette import status
 from starlette.background import BackgroundTasks
 from starlette.responses import Response
 
-from bot import proceed_release, proceed_deploy
-from models import Body, Actions, Deploy
+from bot import proceed_release, proceed_custom
+from models import Body, Actions, Message
 
 api_router = APIRouter()  # noqa: pylint=invalid-name
 
@@ -23,11 +23,7 @@ async def release(*,
     return Response(status_code=status.HTTP_200_OK)
 
 
-@api_router.post('/deploy/')
-async def deploy(*,
-                 body: Deploy,
-                 chat_id: str = None,
-                 background_tasks: BackgroundTasks):
-
-    background_tasks.add_task(proceed_deploy, body, chat_id)
+@api_router.post('/message/')
+async def message(body: Message, background_tasks: BackgroundTasks):
+    background_tasks.add_task(proceed_custom, body)
     return Response(status_code=status.HTTP_200_OK)

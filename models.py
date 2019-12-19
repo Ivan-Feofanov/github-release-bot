@@ -40,6 +40,7 @@ class Body(BaseModel):
     repository: Repository
 
 
-class Deploy(BaseModel):
-    project_name: str
-    tag: str
+class Message(BaseModel):
+    text: str
+    chat_id: str
+    parse_mode: str = None

@@ -4,7 +4,7 @@ import aiohttp
 from aiogram import Bot
 from aiogram.types import ParseMode, Message
 
-from models import Body, Deploy
+from models import Body, Message as CustomMessage
 from utils import make_message
 
 TOKEN = os.getenv('TOKEN', '110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw')
@@ -30,9 +30,14 @@ async def proceed_release(body: Body, chat_id: str) -> Message:
         parse_mode=ParseMode.MARKDOWN)
 
 
-async def proceed_deploy(body: Deploy, chat_id: str) -> Message:
-    text = f'*{body.project_name}* release *{body.tag}* deployed'
+async def proceed_custom(message: CustomMessage) -> Message:
+    parse_mode = None
+    if message.parse_mode == 'markdown':
+        parse_mode = ParseMode.MARKDOWN
+    elif message.parse_mode == 'html':
+        parse_mode = ParseMode.HTML
+
     return await bot.send_message(
-        chat_id=chat_id,
-        text=text,
-        parse_mode=ParseMode.MARKDOWN)
+        chat_id=message.chat_id,
+        text=message.text,
+        parse_mode=parse_mode)

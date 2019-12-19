@@ -65,20 +65,35 @@ Correct description example:
 ``` 
 
 ---
-### Deploy hook usage example:
+### Custom message
+You also can send any custom messages via bot using POST-endpoint '/message/'
+This endpoint accepts next params:
+```json
+{
+  "text": "any string you wanna send to bot",
+  "chat_id": "your chat id",
+  "parse_mode": "markdown|html"
+}
+```
+#### Custom message hook usage example:
 ```shell script
 #!/bin/bash
-PROJECT_NAME="my_project_name"
+PROJECT_NAME="my-project-name"
 GIT_TAG=$(git describe --tags --abbrev=0)
 HOST="http://example.com"
 PORT="80"
 CHAT_ID="my_chat_id"
 KEY="my_secret_key"
 
-PAYLOAD="{\"project_name\":\"$PROJECT_NAME\",\"tag\":\"$GIT_TAG\"}"
-SIGN="sha1="$(echo -n $PAYLOAD | openssl sha1 -hmac $KEY | sed -e 's/^.* //')
+PAYLOAD=\
+"{
+    \"text\":\"Project *$PROJECT_NAME* was succefully deployed with tag *$GIT_TAG*\",
+    \"chat_id\": \"$CHAT_ID\",
+    \"parse_mode\": \"markdown\"
+}"
 
-curl -X POST "http://$HOST:$PORT/deploy/?chat_id=$CHAT_ID" \
-  -H "X-Hub-Signature: $SIGN" \
-  -d $PAYLOAD
+SIGN="sha1="$(echo -n "$PAYLOAD" | openssl sha1 -hmac $KEY | sed -e 's/^.* //')
+
+ADDRESS="${HOST}:${PORT}/message/"
+curl -X POST $ADDRESS -H "X-Hub-Signature: $SIGN" -d "$PAYLOAD"
 ```
