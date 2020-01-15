@@ -1,7 +1,11 @@
+import os
+from urllib.parse import urljoin, quote
+
 import pytest
 from faker import Faker
 from starlette.testclient import TestClient
 
+import settings
 from main import app
 
 fake = Faker()
@@ -150,3 +154,15 @@ def custom_body(request):
         'chat_id': fake.sha1(),
         'parse_mode': request.param
     }
+
+
+@pytest.fixture(autouse=True)
+def set_token(monkeypatch):
+    monkeypatch.setenv('BOT_TOKEN', 'token')
+    yield
+
+
+@pytest.fixture()
+def bot_url(monkeypatch):
+    token = os.getenv('BOT_TOKEN')
+    return urljoin(settings.TG_API_URL, quote(f'bot{token}/sendMessage'))

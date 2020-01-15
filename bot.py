@@ -1,43 +1,36 @@
 import os
+from urllib.parse import urljoin, quote
 
-import aiohttp
-from aiogram import Bot
-from aiogram.types import ParseMode, Message
+import httpx
+from httpx import Response
 
-from models import Body, Message as CustomMessage
+from models import Body, Message
+from settings import TG_API_URL
 from utils import make_message
 
-TOKEN = os.getenv('TOKEN', '110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw')
-CHAT_ID = os.getenv('CHAT_ID', 'CHAT_ID')
 
-# Proxy settings
-PROXY_URL = os.getenv('PROXY_URL')
-PROXY_USERNAME = os.getenv('PROXY_USERNAME')
-PROXY_PASSWORD = os.getenv('PROXY_PASSWORD')
-PROXY_AUTH = None
-
-if PROXY_URL and PROXY_USERNAME and PROXY_PASSWORD:
-    PROXY_AUTH = aiohttp.BasicAuth(
-        login=PROXY_USERNAME, password=PROXY_PASSWORD)
-
-bot = Bot(token=TOKEN, proxy=PROXY_URL, proxy_auth=PROXY_AUTH)  # noqa: pylint=invalid-name
+def get_url():
+    proxy_url = os.getenv('PROXY_URL')
+    base_url = proxy_url if proxy_url else TG_API_URL
+    return urljoin(base_url, quote(f"bot{os.getenv('BOT_TOKEN')}/sendMessage"))
 
 
-async def proceed_release(body: Body, chat_id: str) -> Message:
-    return await bot.send_message(
+async def proceed_release(body: Body, chat_id: str) -> Response:
+    data = dict(
         chat_id=chat_id,
         text=make_message(body),
-        parse_mode=ParseMode.MARKDOWN)
+        parse_mode='markdown')
+    url = get_url()
+    async with httpx.AsyncClient() as client:
+        return await client.post(url=url, json=data)
 
 
-async def proceed_custom(message: CustomMessage) -> Message:
-    parse_mode = None
-    if message.parse_mode == 'markdown':
-        parse_mode = ParseMode.MARKDOWN
-    elif message.parse_mode == 'html':
-        parse_mode = ParseMode.HTML
-
-    return await bot.send_message(
+async def proceed_custom(message: Message) -> Response:
+    data = dict(
         chat_id=message.chat_id,
-        text=message.text,
-        parse_mode=parse_mode)
+        text=message.text)
+    url = get_url()
+    if message.parse_mode:
+        data['parse_mode'] = message.parse_mode
+    async with httpx.AsyncClient() as client:
+        return await client.post(url=url, json=data)

@@ -1,0 +1,5 @@
+strictness: veryhigh
+
+pylint:
+  options:
+    jobs: 8

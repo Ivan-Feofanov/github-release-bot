@@ -9,12 +9,12 @@ faker = "*"
 pytest = "*"
 prospector = "==1.2.0.dev3"
 pyflakes = ">=2.0.0"
+respx = "*"
 
 [packages]
 fastapi = "*"
 uvicorn = "*"
-aiogram = "*"
-aiohttp-socks = "*"
+httpx = "*"
 
 [requires]
 python_version = "3.8"
