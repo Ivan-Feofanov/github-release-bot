@@ -19,6 +19,3 @@ def test_custom_message(client, custom_body, bot_url):
 
     assert response.status_code == status.HTTP_200_OK
     assert request.called
-    # mock.assert_called_once_with(
-    #     chat_id=custom_body['chat_id'],
-    #     text=custom_body['text'])
