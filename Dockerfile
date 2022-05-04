@@ -1,4 +1,4 @@
-FROM python:alpine3.10
+FROM python:3.11.0a7-slim
 
 RUN apk add python3-dev build-base
 
